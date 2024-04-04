@@ -14,7 +14,7 @@ namespace NotificationService.Application.AutoMapperProfiles
         public MappingProfiles()
         {
 
-            CreateMap<NotificationTemplate, NotificationTemplateDto>().
+            CreateMap<NotificationTemplate, NotificationTemplateDto>().ReverseMap();
         }
     }
 }
