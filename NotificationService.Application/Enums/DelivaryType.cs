@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace NotificationService.Application.Enums
 {
+    [Flags]
     public enum DelivaryType
     {
         SMS = 10,

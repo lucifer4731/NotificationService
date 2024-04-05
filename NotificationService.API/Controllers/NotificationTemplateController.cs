@@ -2,8 +2,12 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NotificationService.Application.CQRS.Command.NotificationTemplate.CreateNotificationTemplate;
+using NotificationService.Application.CQRS.Command.NotificationTemplate.DeleteNotificationTemplate;
+using NotificationService.Application.CQRS.Command.NotificationTemplate.EditNotificationTemplate;
 using NotificationService.Application.CQRS.Query.NotificationTemplate.GetAllNotificationTemplates;
 using NotificationService.Application.CQRS.Query.NotificationTemplate.GetNotificationTemplateById;
+using NotificationService.Application.Dtos;
+using NotificationService.Application.Interfaces.NotificationTemplate;
 
 namespace NotificationService.API.Controllers
 {
@@ -21,6 +25,7 @@ namespace NotificationService.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll([FromQuery] GetAllNotificationTemplatesQuery request)
         {
+            //TODO returns error
             var result = await _mediator.Send(request);
 
             if(result.NotificationTemplates.Count == 0)
@@ -41,11 +46,25 @@ namespace NotificationService.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateNotificationTemplate([FromQuery] CreateNotificationTemplateQuery request)
+        public async Task<IActionResult> CreateNotificationTemplate([FromBody] CreateNotificationTemplateQuery request)
         {
             await _mediator.Send(request);
             return Ok();
 
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateNotificationTemplate([FromBody] EditNotificationTemplateQuery request)
+        {
+            await _mediator.Send(request);  
+            return Ok();
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> RemoveNotificationTemplate([FromQuery] DeleteNotificationTemplateQuery request)
+        {
+            await _mediator.Send(request);
+            return Ok();
         }
     }
 }

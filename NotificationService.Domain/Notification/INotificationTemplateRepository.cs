@@ -12,6 +12,6 @@ namespace NotificationService.Domain.Notification
         Task<NotificationTemplate> GetById(NotificationTemplateId id);
         Task<NotificationTemplateId> Insert(NotificationTemplate notificationTemplate);
         Task Update(NotificationTemplate notificationTemplate);
-        void Delete(NotificationTemplateId id);
+        Task Delete(NotificationTemplateId id);
     }
 }

@@ -30,6 +30,15 @@ namespace NotificationService.Application.AutoMapperProfiles
                 ForMember(dest => dest.ExternalTokens, opt => opt.MapFrom(src => JsonConvert.SerializeObject(src.ExternalTokens, _settings))).
                  ForMember(dest => dest.InternalTokens, opt => opt.MapFrom(src => JsonConvert.SerializeObject(src.InternalTokens, _settings))).
                   ForMember(dest => dest.LimitedToDelivaryTypes, opt => opt.MapFrom(src => JsonConvert.SerializeObject(src.LimitedToDelivaryTypes, _settings)));
+
+            CreateMap<NotificationTemplate, NotificationTemplateDtoForEdit>().
+               ForMember(dest => dest.ExternalTokens, opt => opt.MapFrom(src => JsonConvert.DeserializeObject(src.ExternalTokens, _settings))).
+                ForMember(dest => dest.InternalTokens, opt => opt.MapFrom(src => JsonConvert.DeserializeObject(src.InternalTokens, _settings))).
+                 ForMember(dest => dest.LimitedToDelivaryTypes, opt => opt.MapFrom(src => JsonConvert.DeserializeObject(src.LimitedToDelivaryTypes, _settings)))
+           .ReverseMap().
+               ForMember(dest => dest.ExternalTokens, opt => opt.MapFrom(src => JsonConvert.SerializeObject(src.ExternalTokens, _settings))).
+                ForMember(dest => dest.InternalTokens, opt => opt.MapFrom(src => JsonConvert.SerializeObject(src.InternalTokens, _settings))).
+                 ForMember(dest => dest.LimitedToDelivaryTypes, opt => opt.MapFrom(src => JsonConvert.SerializeObject(src.LimitedToDelivaryTypes, _settings)));
         }
     }
 }

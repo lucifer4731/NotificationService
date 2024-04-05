@@ -49,12 +49,12 @@ namespace NotificationService.Infrastructure.Repositories
             _unitOfWork.SaveChanges();
         }
 
-        public void Delete(NotificationTemplateId id)
+        public async Task Delete(NotificationTemplateId id)
         {
             var notificationTemplate = NotificationTemplate.CreateNewForDelete(id);
 
             _context.Remove(notificationTemplate);
-            _unitOfWork.SaveChanges();
+           await _unitOfWork.SaveChanges();
         }
     }
 }

@@ -12,8 +12,8 @@ namespace NotificationService.Application.Interfaces.NotificationTemplate
         Task<List<NotificationTemplateDto>> GetAll();
         Task<NotificationTemplateDto> GetById(Guid id);
         Task Add(NotificationTemplateDto model);
-        Task Edit(NotificationTemplateDto model);
-        void Remove(Guid id);
+        Task Edit(NotificationTemplateDtoForEdit model);
+        Task Remove(Guid id);
 
     }
 }

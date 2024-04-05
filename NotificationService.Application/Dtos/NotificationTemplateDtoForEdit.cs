@@ -9,9 +9,11 @@ using System.Threading.Tasks;
 
 namespace NotificationService.Application.Dtos
 {
-    [DataContract]
-    public class NotificationTemplateDto
+    public class NotificationTemplateDtoForEdit
     {
+        [DataMember(Name = "NotificationTemplateId")]
+        public Guid Id { get; set; }
+
         [DataMember(Name = "NotificationTemplateName")]
         public string NotificationTemplateName { get; set; }
 
