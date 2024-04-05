@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ namespace DevTubeCommerce.Domain.Core.Base
 {
     public abstract class Entity<TKey>
     {
+        [Required]
         public TKey Id { get; protected set; }
 
 

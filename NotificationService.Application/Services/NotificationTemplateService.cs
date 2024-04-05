@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using NotificationService.Application.Dtos;
+using NotificationService.Application.Enums;
 using NotificationService.Application.Interfaces.NotificationTemplate;
+using NotificationService.Application.Utilities;
 using NotificationService.Domain.Notification;
 using System;
 using System.Collections.Generic;
@@ -14,42 +16,57 @@ namespace NotificationService.Application.Services
     {
         private readonly INotificationTemplateRepository _notificationTemplateRepository;
         private readonly IMapper _mapper;
+        private readonly JSonUtility _jSonUtility;
 
-        public NotificationTemplateService(INotificationTemplateRepository NotificationTemplateRepository, IMapper mapper)
+        public NotificationTemplateService(INotificationTemplateRepository NotificationTemplateRepository, IMapper mapper,JSonUtility jSonUtility)
         {
             _notificationTemplateRepository = NotificationTemplateRepository;
             _mapper = mapper;
+            _jSonUtility = jSonUtility;
         }
 
         public async Task Add(NotificationTemplateDto model)
         {
-            List<int> LimitedToDelivaryTypesValues = new List<int>();
-            foreach (var item in model.LimitedToDelivaryTypes)
+            List<int> limitedToDelivaryTypesValuesList = new List<int>();
+            for (int i = 0; i < model.LimitedToDelivaryTypes.Count; i++)
             {
-                int value = Convert.ToInt32(model.LimitedToDelivaryTypes);
-                LimitedToDelivaryTypesValues.Add(value);
+                int value = (int)(DelivaryType)Enum.Parse(typeof(DelivaryType), Convert.ToString(model.LimitedToDelivaryTypes[i]));
+                limitedToDelivaryTypesValuesList.Add(value);
             }
+            //foreach (var item in model.LimitedToDelivaryTypes)
+            //{
+            //    int value = (int)(DelivaryType)Enum.Parse(typeof(DelivaryType), Convert.ToString(model.LimitedToDelivaryTypes[0]));
+            //    limitedToDelivaryTypesValuesList.Add(value);
+            //}
 
-            var notificationTemplate = NotificationTemplate.CreateNew(model.Name, model.Template, model.InternalTokens, model.ExternalTokens, LimitedToDelivaryTypesValues);
-            await _notificationTemplateRepository.Insert(notificationTemplate);
+            string limitedToDelivaryTypesValues = _jSonUtility.ConvertListToJson(limitedToDelivaryTypesValuesList);
+            NotificationTemplate notificationTemplate = _mapper.Map<NotificationTemplate>(model);
+
+            var newNotificationTemplate = NotificationTemplate.CreateNew(notificationTemplate.NotificationTemplateName, model.Template, notificationTemplate.InternalTokens, notificationTemplate.ExternalTokens, limitedToDelivaryTypesValues);
+            await _notificationTemplateRepository.Insert(newNotificationTemplate);
         }
 
         public async Task Edit(NotificationTemplateDto model)
         {
-            List<int> LimitedToDelivaryTypesValues = new List<int>();
+            List<int> limitedToDelivaryTypesValuesList = new List<int>();
             foreach (var item in model.LimitedToDelivaryTypes)
             {
                 int value = Convert.ToInt32(model.LimitedToDelivaryTypes);
-                LimitedToDelivaryTypesValues.Add(value);
+                limitedToDelivaryTypesValuesList.Add(value);
             }
-            var notificationTemplate = NotificationTemplate.CreateNew(model.Name, model.Template, model.InternalTokens, model.ExternalTokens, LimitedToDelivaryTypesValues);
-            await _notificationTemplateRepository.Update(notificationTemplate);
+
+            string limitedToDelivaryTypesValues = _jSonUtility.ConvertListToJson(limitedToDelivaryTypesValuesList);
+            NotificationTemplate notificationTemplate = _mapper.Map<NotificationTemplate>(model);
+
+            var newNotificationTemplate = NotificationTemplate.CreateNew(notificationTemplate.NotificationTemplateName, model.Template, notificationTemplate.InternalTokens, notificationTemplate.ExternalTokens, limitedToDelivaryTypesValues);
+            await _notificationTemplateRepository.Update(newNotificationTemplate);
         }
 
         public async Task<List<NotificationTemplateDto>> GetAll()
         {
             IEnumerable<NotificationTemplate> notificationTemplates = await _notificationTemplateRepository.GetAll();
-            var notificationTemplateDto = _mapper.Map<List<NotificationTemplateDto>>(notificationTemplates);
+            List<NotificationTemplateDto> notificationTemplateDto = new List<NotificationTemplateDto>();
+            _mapper.Map<NotificationTemplate>(notificationTemplates);
             return notificationTemplateDto;
         }
 

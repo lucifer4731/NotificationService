@@ -10,19 +10,19 @@ namespace NotificationService.Domain.Notification
     public class NotificationTemplate : AggregateRoot<NotificationTemplateId>
     {
         #region Properties
-        public string Name { get; set; } //globally unique
+        public string NotificationTemplateName { get; set; } //globally unique
         public string Template { get; set; } // example :hi dear $user.fullname , your code is : %token1
-        public List<string> InternalTokens { get; set; } // %user.fullname
-        public List<string> ExternalTokens { get; set; } //%token1
-        public List<int> LimitedToDelivaryTypes { get; set; } 
+        public string InternalTokens { get; set; } // %user.fullname
+        public string ExternalTokens { get; set; } //%token1
+        public string LimitedToDelivaryTypes { get; set; } 
         #endregion
 
         #region Methods
 
-        public static NotificationTemplate CreateNew(string name, string template, List<string> internalTokens, List<string> externalTokens, List<int> limitedToDelivaryTypes)
+        public static NotificationTemplate CreateNew(string NotificationTemplateName, string template, string internalTokens, string externalTokens, string limitedToDelivaryTypes)
         {
             var NotificationTemplateId = new NotificationTemplateId(Guid.NewGuid());
-            return new NotificationTemplate(NotificationTemplateId, name, template, internalTokens, externalTokens, limitedToDelivaryTypes);
+            return new NotificationTemplate(NotificationTemplateId, NotificationTemplateName, template, internalTokens, externalTokens, limitedToDelivaryTypes);
         }
 
         public static NotificationTemplate CreateNewForDelete(NotificationTemplateId id)
@@ -32,7 +32,7 @@ namespace NotificationService.Domain.Notification
 
         public void Update(NotificationTemplate newValue)
         {
-            Name = newValue.Name;
+            NotificationTemplateName = newValue.NotificationTemplateName;
             Template = newValue.Template;
             InternalTokens = newValue.InternalTokens;
             ExternalTokens = newValue.ExternalTokens;
@@ -42,10 +42,10 @@ namespace NotificationService.Domain.Notification
 	#endregion
 
         #region Ctors
-        public NotificationTemplate(NotificationTemplateId id,string name, string template, List<string> internalTokens, List<string> externalTokens, List<int> limitedToDelivaryTypes)
+        public NotificationTemplate(NotificationTemplateId id,string notificationTemplateName, string template, string internalTokens, string externalTokens, string limitedToDelivaryTypes)
         {
-            Id = id; 
-            Name = name;
+            Id = id;
+            NotificationTemplateName = notificationTemplateName;
             Template = template;
             InternalTokens = internalTokens;
             ExternalTokens = externalTokens;

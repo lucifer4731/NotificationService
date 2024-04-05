@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using NotificationService.Application.AutoMapperProfiles;
+using NotificationService.Application.DI;
 using NotificationService.Infrastructure;
 using NotificationService.Infrastructure.Context;
 using NotificationService.Infrastructure.DI;
@@ -13,6 +14,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.InstallApplication();
 builder.Services.InstallInfrastructure();
 
 #region AutoMapper config
@@ -34,6 +36,16 @@ builder.Services.AddDbContext<SqlContext>(options =>
 
 
 var app = builder.Build();
+
+#region Migrations
+//using (var scope = app.Services.CreateScope())
+//{
+//    var services = scope.ServiceProvider;
+//    var context = services.GetRequiredService<SqlContext>();
+//    context.Database.Migrate();
+//}
+
+#endregion
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
