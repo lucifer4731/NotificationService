@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using NotificationService.Application.Dtos;
 using NotificationService.Application.Enums;
 using NotificationService.Application.Interfaces.NotificationTemplate;
@@ -72,9 +73,15 @@ namespace NotificationService.Application.Services
             return notificationTemplateDto;
         }
 
+        public async Task<NotificationTemplate> GetByName(string notificationTemplateName)
+        {
+            var notificationTemplate = await _notificationTemplateRepository.GetByName(notificationTemplateName);
+            return notificationTemplate;
+        }
+
         public async Task Remove(Guid id)
         {
-           await _notificationTemplateRepository.Delete(new NotificationTemplateId(id));
+            await _notificationTemplateRepository.Delete(new NotificationTemplateId(id));
         }
     }
 }

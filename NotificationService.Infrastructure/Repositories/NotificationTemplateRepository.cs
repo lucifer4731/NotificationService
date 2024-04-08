@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NotificationService.Domain.Notification;
+using NotificationService.Infrastructure.Base;
 using NotificationService.Infrastructure.Context;
 using NotificationService.Infrastructure.Patterns;
 using System;
@@ -31,8 +32,18 @@ namespace NotificationService.Infrastructure.Repositories
             return await _context.NotificationTemplate.FindAsync(id);
         }
 
+
+        public async Task<NotificationTemplate> GetByName(string notificationTemplateName)
+        {
+            var notificationTemplate = await _context.NotificationTemplate.FirstOrDefaultAsync(t => t.NotificationTemplateName.Trim() == notificationTemplateName.Trim());
+            return notificationTemplate;
+        }
+
         public async Task<NotificationTemplateId> Insert(NotificationTemplate notificationTemplate)
         {
+            if (GetByName(notificationTemplate.NotificationTemplateName) == null)
+                throw new DatabaseException("Duplicate Name...!");
+
             await _context.AddAsync(notificationTemplate);
             await _unitOfWork.SaveChanges();
             return notificationTemplate.Id;
@@ -54,7 +65,8 @@ namespace NotificationService.Infrastructure.Repositories
             var notificationTemplate = NotificationTemplate.CreateNewForDelete(id);
 
             _context.Remove(notificationTemplate);
-           await _unitOfWork.SaveChanges();
+            await _unitOfWork.SaveChanges();
         }
+
     }
 }

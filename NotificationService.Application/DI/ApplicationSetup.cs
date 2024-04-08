@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using NotificationService.Application.Interfaces.NotificationTemplate;
+using NotificationService.Application.Interfaces.SendNotification;
+using NotificationService.Application.RabitMQ;
 using NotificationService.Application.Services;
 using NotificationService.Application.Utilities;
 using System;
@@ -18,6 +20,11 @@ namespace NotificationService.Application.DI
             services.AddMediatR(m => m.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
             services.AddScoped<INotificationTemplateService, NotificationTemplateService>();
             services.AddSingleton<JSonUtility>();
+            services.AddSingleton<StringUtility>();
+            services.AddScoped<ISmtpEmailSender, SmtpEmailSender>();
+            services.AddScoped<ISMSSender, SMSSender>();
+            services.AddScoped<IMessageReceiver, MessageReceiver>();
+
         }
     }
 }

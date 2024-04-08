@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using NotificationService.Application.AutoMapperProfiles;
 using NotificationService.Application.DI;
+using NotificationService.Domain.DI;
 using NotificationService.Infrastructure;
 using NotificationService.Infrastructure.Context;
 using NotificationService.Infrastructure.DI;
@@ -16,6 +17,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.InstallApplication();
 builder.Services.InstallInfrastructure();
+builder.Services.InstallDomain();
 
 #region AutoMapper config
 var config = new AutoMapper.MapperConfiguration(cfg =>

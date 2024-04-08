@@ -11,18 +11,22 @@ namespace NotificationService.Domain.Notification
     {
         #region Properties
         public string NotificationTemplateName { get; set; } //globally unique
+
         public string Template { get; set; } // example :hi dear $user.fullname , your code is : %token1
+
         public string InternalTokens { get; set; } // %user.fullname
+
         public string ExternalTokens { get; set; } //%token1
-        public string LimitedToDelivaryTypes { get; set; } 
+
+        public string LimitedToDelivaryTypes { get; set; }
         #endregion
 
         #region Methods
 
-        public static NotificationTemplate CreateNew(string NotificationTemplateName, string template, string internalTokens, string externalTokens, string limitedToDelivaryTypes)
+        public static NotificationTemplate CreateNew(string notificationTemplateName,  string template, string internalTokens, string externalTokens, string limitedToDelivaryTypes)
         {
             var NotificationTemplateId = new NotificationTemplateId(Guid.NewGuid());
-            return new NotificationTemplate(NotificationTemplateId, NotificationTemplateName, template, internalTokens, externalTokens, limitedToDelivaryTypes);
+            return new NotificationTemplate(NotificationTemplateId, notificationTemplateName, template, internalTokens, externalTokens, limitedToDelivaryTypes);
         }
 
         public static NotificationTemplate CreateNewForDelete(NotificationTemplateId id)
@@ -35,21 +39,21 @@ namespace NotificationService.Domain.Notification
             NotificationTemplateName = newValue.NotificationTemplateName;
             Template = newValue.Template;
             InternalTokens = newValue.InternalTokens;
-            ExternalTokens = newValue.ExternalTokens;
+            ExternalTokens= newValue.ExternalTokens;
             LimitedToDelivaryTypes = newValue.LimitedToDelivaryTypes;
         }
         
 	#endregion
 
         #region Ctors
-        public NotificationTemplate(NotificationTemplateId id,string notificationTemplateName, string template, string internalTokens, string externalTokens, string limitedToDelivaryTypes)
+        public NotificationTemplate(NotificationTemplateId id, string notificationTemplateName, string template, string internalTokens, string externalTokens, string limitedToDelivaryTypes)
         {
             Id = id;
             NotificationTemplateName = notificationTemplateName;
             Template = template;
             InternalTokens = internalTokens;
             ExternalTokens = externalTokens;
-            LimitedToDelivaryTypes = limitedToDelivaryTypes;
+            limitedToDelivaryTypes = limitedToDelivaryTypes;
         }
 
         public NotificationTemplate(NotificationTemplateId id)

@@ -10,6 +10,7 @@ namespace NotificationService.Domain.Notification
     {
         Task<IEnumerable<NotificationTemplate>> GetAll();
         Task<NotificationTemplate> GetById(NotificationTemplateId id);
+        Task<NotificationTemplate> GetByName(string notificationTemplateName);
         Task<NotificationTemplateId> Insert(NotificationTemplate notificationTemplate);
         Task Update(NotificationTemplate notificationTemplate);
         Task Delete(NotificationTemplateId id);
